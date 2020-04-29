@@ -67,7 +67,7 @@
         <div class="quiz">
             <hr class="quiz-breaker">
             <div class="question-interface-wrapper">
-                <button class="prev"><=</button>
+                <button class="prev" nav-action="prev"><=</button>
                 <div class="question">
                     <h1>Pytanie nr
                         <span class="question-nr">1</span>
@@ -96,12 +96,12 @@
                         <span class="timer-value">00:00:00</span>
                     </div>
                 </div>
-                <button class="next">=></button>
+                <button class="next" nav-action="next">=></button>
 
                 <div class="buttons">
-                    <button class="next-inline">Następne pytanie</button>
-                    <button class="finish">Zakończ quiz</button>
-                    <button class="skip">Anuluj quiz</button>
+                    <button class="next-inline" nav-action="next">Następne pytanie</button>
+                    <button disabled class="finish" nav-action="finish">Zakończ quiz</button>
+                    <button class="skip" nav-action="skip">Anuluj quiz</button>
                 </div>
             </div>
         </div>
