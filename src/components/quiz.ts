@@ -89,12 +89,17 @@ class AnswerView {
 
 class QuizNavigation {
   private _canFinish: Computed<boolean>;
+  private _finishBtn: HTMLButtonElement;
 
   constructor(answers: Observable<maybeNumber>[], parent: Quiz) {
+    this._finishBtn = document.querySelector('.finish') as HTMLButtonElement;
     this._canFinish = new Computed<boolean>(
       () => answers.every(x => x.value),
       answers
     );
+    this._canFinish.subscribe(value => {
+      this._finishBtn.disabled = !value;
+    });
     this.bindActions(parent);
     this.addKeyboardHandlers(parent);
   }
@@ -167,6 +172,8 @@ export class Quiz extends Component {
 
   public finish(): void {
     return;
+
+    // this._onFinish();
   }
 
   public skip(): void {
