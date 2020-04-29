@@ -1,4 +1,4 @@
-interface Question {
+export interface Question {
   readonly statement: string;
   readonly answer: number;
   readonly secondsPenalty: number;

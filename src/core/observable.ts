@@ -3,6 +3,7 @@ type Listener<T> = (value: T) => void;
 export class Observable<T> {
   protected _value: T;
   private listeners: Listener<T>[];
+
   constructor(value: T) {
     this._value = value;
     this.listeners = [];
