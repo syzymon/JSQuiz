@@ -95,6 +95,7 @@ class QuizNavigation {
       answers
     );
     this.bindActions(parent);
+    this.addKeyboardHandlers(parent);
   }
 
   private bindActions(par: Quiz): void {
@@ -107,6 +108,21 @@ class QuizNavigation {
         elem.onclick = par[actionName].bind(par) as () => void;
       }
     });
+  }
+
+  private addKeyboardHandlers(par: Quiz): void {
+    document.onkeyup = event => {
+      if (!(event?.target instanceof HTMLInputElement)) {
+        switch (event.code) {
+          case 'ArrowLeft':
+            par.prev();
+            break;
+          case 'ArrowRight':
+            par.next();
+            break;
+        }
+      }
+    };
   }
 }
 
