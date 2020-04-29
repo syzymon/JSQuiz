@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript Quiz</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="js-logo">
+            <img src="inspiration/javascript-1.svg" alt="js-logo"/>
+        </div>
+        <div class="pagetitle">
+            <h1>JavaScript Quiz</h1>
+        </div>
+        <div class="cheems-wrapper">
+            <img src="inspiration/Cheemsburbger.png" alt="cheems"/>
+        </div>
+    </header>
+    <div class="intro">
+        <p><a href="https://pl.wikipedia.org/wiki/JavaScript">JavaScript</a>
+            jest obiektowym skryptowym językiem programowania.
+            Stworzony
+            został przez firmę Netscape w 1995 roku.</p>
+        <p>
+            Język JavaScript jest stosunkowo prostym językiem do nauczenia się,
+            szczególnie jeśli wcześniej miało się do czynienia z programowaniem
+            w językach <a href="https://pl.wikipedia.org/wiki/C%2B%2B">C/C++</a>
+            czy też <a href="https://pl.wikipedia.org/wiki/Java">Java</a>.
+            Przygotowaliśmy <b>prosty quiz</b>, którego celem jest sprawdzenie
+            znajomości tego języka.
+        </p>
+        <p>
+            Quiz składa się z kilku pytań (co najmniej 4)
+            dotyczących
+            wartości różnych wyrażeń w tym języku. Odpowiedzi na pytania są <b>wyłącznie
+            liczbami całkowitymi.</b> Zakończenie quizu jest możliwe tylko po
+            udzieleniu
+            odpowiedzi na <b>wszystkie pytania</b>. Na wynik quizu składa się
+            czas wypełnienia quizu (od momentu rozpoczęcia do zakończenia) oraz
+            suma karnych sekund z wszystkich pytań, na które udzielono
+            niepoprawnej
+            odpowiedzi.
+        </p>
+    </div>
+    <main>
+        <div class="before-quiz">
+            <button type="button" class="block-btn">=> Rozpocznij quiz!</button>
+            <div class="score-wrapper">
+                <div class="best-scores">
+                    <h1>Najlepsze wyniki:</h1>
+                    <ol class="results-list">
+                        <li>2.137 s</li>
+                        <li>14 s</li>
+                        <li>30 s</li>
+                    </ol>
+                </div>
+                <div class="meme">
+                    <img src="inspiration/3fa.jpg" alt="meme"/>
+                    <span class="caption">Backemd demveloper</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz">
+            <hr class="quiz-breaker">
+            <div class="question-interface-wrapper">
+                <button class="prev"><=</button>
+                <div class="question">
+                    <h1>Pytanie nr
+                        <span class="question-nr">1</span>
+                    </h1>
+                    <h4 class="penalty-head">Kara za błędną odpowiedź:
+                        <span class="question-penalty">5</span> s
+                    </h4>
+                    <h2 class="statement">
+                        Wartość wyrażenia
+                    </h2>
+                    <code class="expression">
+                        (!+[]+[]+![]).length
+                    </code>
+
+
+                    <div class="answer-wrapper">
+                        <label for="answer" class="statement">
+                            wynosi:
+                        </label>
+                        <input type="number" id="answer" name="answer">
+                    </div>
+                </div>
+                <div class="timer-wrapper">
+                    <img src="inspiration/Cheemsburbger.png" alt="cheems"/>
+                    <div class="timer">
+                        <span class="timer-value">00:00:00</span>
+                    </div>
+                </div>
+                <button class="next">=></button>
+
+                <div class="buttons">
+                    <button class="next-inline">Następne pytanie</button>
+                    <button class="finish">Zakończ quiz</button>
+                    <button class="skip">Anuluj quiz</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <a href="https://dev.to/damxipo/javascript-versus-memes-explaining-various-funny-memes-2o8c">
+            JavaScript memes
+        </a>
+    </footer>
+</div>
+<script type="module" src="build/src/index.js"></script>
+</body>
+</html>
