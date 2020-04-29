@@ -1,5 +1,6 @@
 import {Question, questions as que} from '../data/questions.js';
 import {Observable, Computed} from '../core/observable.js';
+import {Component} from './component.js';
 
 class Counter extends Observable<number> {
   private readonly _limit: number;
@@ -102,7 +103,6 @@ class QuizNavigation {
     document.querySelectorAll('[nav-action]').forEach(elem => {
       if (elem instanceof HTMLButtonElement) {
         const actionName = elem.getAttribute('nav-action') as string;
-        console.log(actionName);
         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
         elem.onclick = par[actionName].bind(par) as () => void;
@@ -126,15 +126,17 @@ class QuizNavigation {
   }
 }
 
-export class Quiz {
+export class Quiz extends Component {
   private readonly _questions: Question[];
   private _idCounter: Counter;
   private _questionView: QuestionView;
   private readonly _answers: Observable<maybeNumber>[];
   private _answerView: AnswerView;
   private _navigation: QuizNavigation;
+  private _onSkip: () => void;
 
-  constructor(questions: Question[] = que) {
+  constructor(onSkip: () => void, questions: Question[] = que) {
+    super(document.querySelector('.quiz') as HTMLDivElement);
     this._questions = questions;
     this._questionView = new QuestionView(questions[0]);
     this._answers = [...Array(this._questions.length)].map(
@@ -147,23 +149,19 @@ export class Quiz {
       this._questionView.question = this._questions[num];
       this._answerView.answer = this._answers[num];
     });
+
+    this._onSkip = onSkip;
   }
 
-  // TODO: return quiz results here
-  // public start(): void {
-  //   const nxt = document.querySelector('.next-inline') as HTMLButtonElement;
-  //   nxt.onclick = () => {
-  //     this._idCounter.next();
-  //   };
-  //   console.log('Run quiz!');
-  // }
+  public start(): void {
+    console.log('quiz start');
+  }
 
   public next(): void {
     this._idCounter.next();
   }
 
   public prev(): void {
-    console.log('prev');
     this._idCounter.prev();
   }
 
@@ -172,7 +170,6 @@ export class Quiz {
   }
 
   public skip(): void {
-    console.log(this);
-    return;
+    this._onSkip();
   }
 }

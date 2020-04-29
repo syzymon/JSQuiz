@@ -80,10 +80,6 @@ img {
 
 main {
   grid-area: main;
-
-  .before-quiz {
-    display: none;
-  }
 }
 
 
@@ -96,7 +92,7 @@ main {
   grid-template-rows: 140px auto auto 20px;
 }
 
-.block-btn {
+.start-btn {
   background-color: $js-yellow;
   border: 0;
   color: $js-bg;
@@ -108,6 +104,10 @@ main {
   padding: 14px 28px;
   text-align: center;
   width: 100%;
+
+  &:hover:enabled {
+    background-color: $yellow-light;
+  }
 }
 
 .best-scores {

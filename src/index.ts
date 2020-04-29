@@ -1,4 +1,8 @@
-import {Quiz} from './components/quiz.js';
+import {App} from './app.js';
 
-const q = new Quiz();
+let app;
+
+document.addEventListener('DOMContentLoaded', () => {
+  app = new App();
+});
 // q.run();
