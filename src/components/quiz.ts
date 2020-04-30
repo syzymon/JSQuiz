@@ -1,6 +1,7 @@
 import {Question, questions as que} from '../data/questions.js';
 import {Observable, Computed} from '../core/observable.js';
 import {Component} from './component.js';
+import {ContextTimer} from './timer.js';
 
 class Counter extends Observable<number> {
   private readonly _limit: number;
@@ -10,6 +11,7 @@ class Counter extends Observable<number> {
     super(0);
     this._limit = n;
     this._elem = document.querySelector('.question-nr') as HTMLSpanElement;
+    this._elem.textContent = '1';
     this.subscribe(changes);
     this.subscribe(val => {
       this._elem.textContent = (1 + val).toString();
@@ -129,6 +131,10 @@ class QuizNavigation {
       }
     };
   }
+
+  public unregister() {
+    document.onkeyup = null;
+  }
 }
 
 export class Quiz extends Component {
@@ -138,6 +144,7 @@ export class Quiz extends Component {
   private readonly _answers: Observable<maybeNumber>[];
   private _answerView: AnswerView;
   private _navigation: QuizNavigation;
+  private _timer: ContextTimer;
   private _onSkip: () => void;
 
   constructor(onSkip: () => void, questions: Question[] = que) {
@@ -155,11 +162,19 @@ export class Quiz extends Component {
       this._answerView.answer = this._answers[num];
     });
 
+    this._timer = new ContextTimer(
+      document.querySelector('.timer-value') as HTMLSpanElement,
+      100,
+      this._idCounter,
+      this._questions.length
+    );
+
     this._onSkip = onSkip;
   }
 
   public start(): void {
     console.log('quiz start');
+    this._timer.start();
   }
 
   public next(): void {
@@ -172,11 +187,16 @@ export class Quiz extends Component {
 
   public finish(): void {
     return;
+  }
 
-    // this._onFinish();
+  public tearDown(): void {
+    super.tearDown();
+    this._timer.stop();
+    this._navigation.unregister();
   }
 
   public skip(): void {
+    this.tearDown();
     this._onSkip();
   }
 }

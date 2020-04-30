@@ -16,11 +16,14 @@ export abstract class Component {
     });
   }
 
+  public tearDown(): void {}
+
   get display(): boolean {
     return !this._currentlyHidden.value;
   }
 
   set display(to: boolean) {
+    if (!to) this.tearDown();
     this._currentlyHidden.value = !to;
   }
 }
