@@ -1,7 +1,7 @@
 import {Observable} from '../core/observable.js';
 
-export abstract class Component {
-  private _slideElem: HTMLDivElement;
+export abstract class Slide {
+  protected _slideElem: HTMLDivElement;
   private _currentlyHidden: Observable<boolean>;
 
   protected constructor(slideElement: HTMLDivElement) {

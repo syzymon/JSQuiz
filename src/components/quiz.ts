@@ -1,6 +1,6 @@
 import {Question, questions as que} from '../data/questions.js';
 import {Observable, Computed} from '../core/observable.js';
-import {Component} from './component.js';
+import {Slide} from './slide.js';
 import {ContextTimer} from './timer.js';
 
 class Counter extends Observable<number> {
@@ -83,9 +83,8 @@ class AnswerView {
 
   set answer(switchedAnswer: Observable<maybeNumber>) {
     this._answer = switchedAnswer;
-    this._elem.value = switchedAnswer.value
-      ? switchedAnswer.value.toString()
-      : '';
+    this._elem.value =
+      switchedAnswer.value !== undefined ? switchedAnswer.value.toString() : '';
   }
 }
 
@@ -96,7 +95,7 @@ class QuizNavigation {
   constructor(answers: Observable<maybeNumber>[], parent: Quiz) {
     this._finishBtn = document.querySelector('.finish') as HTMLButtonElement;
     this._canFinish = new Computed<boolean>(
-      () => answers.every(x => x.value),
+      () => answers.every(x => x.value !== undefined),
       answers
     );
     this._canFinish.subscribe(value => {
@@ -143,9 +142,9 @@ export interface QuestionResult {
   readonly timeSpent: number;
 }
 
-type QuizResults = QuestionResult[];
+export type QuizResults = QuestionResult[];
 
-export class Quiz extends Component {
+export class Quiz extends Slide {
   private readonly _questions: Question[];
   private _idCounter: Counter;
   private _questionView: QuestionView;
@@ -176,7 +175,7 @@ export class Quiz extends Component {
     });
 
     this._timer = new ContextTimer(
-      document.querySelector('.timer-value') as HTMLSpanElement,
+      this._slideElem.querySelector('.timer-value') as HTMLSpanElement,
       100,
       this._idCounter,
       this._questions.length

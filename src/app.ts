@@ -1,11 +1,13 @@
 import {Quiz, QuestionResult} from './components/quiz.js';
 import {Intro} from './components/intro.js';
-import {Component} from './components/component.js';
+import {Summary} from './components/summary.js';
+import {Slide} from './components/slide.js';
 
 export class App {
-  private _currentComponent: Component;
+  private _currentComponent: Slide;
   private readonly _intro: Intro;
   private _quiz: Quiz;
+  private readonly _summary: Summary;
 
   constructor() {
     this._quiz = new Quiz(
@@ -16,13 +18,11 @@ export class App {
       this.switchComponent(this._quiz);
       this._quiz.start();
     });
+    this._summary = new Summary(() => {
+      this._intro.updateRanking();
+      this.switchComponent(this._intro);
+    });
     this._currentComponent = this._intro;
-  }
-
-  private switchComponent(newComponent: Component) {
-    this._currentComponent.display = false;
-    this._currentComponent = newComponent;
-    this._currentComponent.display = true;
   }
 
   private onQuizSkip(): void {
@@ -31,9 +31,9 @@ export class App {
   }
 
   private onQuizFinish(results: QuestionResult[]): void {
-    this.switchComponent(this._intro);
-    console.log(results);
     this.initializeNewQuiz();
+    this._summary.present(results);
+    this.switchComponent(this._summary);
   }
 
   private initializeNewQuiz() {
@@ -41,5 +41,11 @@ export class App {
       this.onQuizSkip.bind(this),
       this.onQuizFinish.bind(this)
     );
+  }
+
+  private switchComponent(newComponent: Slide) {
+    this._currentComponent.display = false;
+    this._currentComponent = newComponent;
+    this._currentComponent.display = true;
   }
 }

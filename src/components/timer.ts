@@ -1,5 +1,14 @@
 import {Observable} from '../core/observable.js';
 
+function timeToClock(miliseconds: number): string {
+  const minutes = ~~(miliseconds / 60000);
+  const seconds = ~~((miliseconds - minutes * 60000) / 1000);
+  const hundreds = ~~((miliseconds - minutes * 60000 - seconds * 1000) / 10);
+  const fmt = (num: number) => num.toString().padStart(2, '0');
+  const minutePrefix = minutes > 0 ? `${fmt(minutes)}:` : '';
+  return minutePrefix + `${fmt(seconds)}:${fmt(hundreds)}`;
+}
+
 export class ContextTimer {
   private readonly _textElement: HTMLSpanElement;
   private readonly _precision: number;
@@ -32,19 +41,8 @@ export class ContextTimer {
     this._currentTaskNumber = newTask;
   }
 
-  private stringify(): string {
-    const minutes = ~~(this._msSinceStarted / 60000);
-    const seconds = ~~((this._msSinceStarted - minutes * 60000) / 1000);
-    const hundreds = ~~(
-      (this._msSinceStarted - minutes * 60000 - seconds * 1000) /
-      10
-    );
-    const fmt = (num: number) => num.toString().padStart(2, '0');
-    return `${fmt(minutes)}:${fmt(seconds)}:${fmt(hundreds)}`;
-  }
-
   private updateView(): void {
-    this._textElement.textContent = this.stringify();
+    this._textElement.textContent = timeToClock(this._msSinceStarted);
   }
 
   public start(): void {

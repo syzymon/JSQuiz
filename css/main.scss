@@ -5,6 +5,9 @@ $dark-yellow-mid: #9a8f41;
 $js-yellow: #f0db4f;
 $yellow-light: #e6de93;
 $yellow-white: #fcf7d9;
+$red-yellow: #fb3c16;
+$green-yellow: #89b724;
+
 $title-font: Impact, Helvetica, sans-serif;
 $text-font: Arial, Helvetica, sans-serif;
 $code-font: Consolas, monospace;
@@ -121,7 +124,7 @@ main {
   grid-area: best;
 
   h1 {
-    font-family: Impact, Helvetica, sans-serif;
+    font-family: $title-font;
   }
 
   .results-list {
@@ -179,12 +182,12 @@ main {
   width: 100%;
 }
 
-.quiz {
-  .quiz-breaker {
-    border: 1.5px solid $js-yellow;
-    margin-bottom: 0;
-  }
+.quiz-breaker {
+  border: 1.5px solid $js-yellow;
+  margin-bottom: 0;
+}
 
+.quiz {
   .timer-wrapper {
     align-items: center;
     display: flex;
@@ -314,6 +317,69 @@ main {
   }
 }
 
+.summary {
+  h1 {
+    color: $js-yellow;
+    font-family: $title-font;
+    margin-top: 10.5px;
+  }
+
+  h3 {
+    color: $yellow-white;
+    font-family: $title-font;
+  }
+
+  h2 {
+    color: $yellow-light;
+    font-family: $title-font;
+  }
+
+  span {
+    color: $js-yellow;
+  }
+
+  ul {
+    li {
+      color: $yellow-white;
+      font-family: $text-font;
+      font-size: 24px;
+      margin-bottom: 10px;
+
+      code {
+        font-size: 30px;
+      }
+
+      .expr {
+        background-color: $js-yellow;
+        color: $js-bg;
+      }
+
+      .incorrect-ans {
+        background-color: $red-yellow;
+        color: $yellow-white;
+      }
+
+      .should-be {
+        background-color: $green-yellow;
+        color: $yellow-white;
+      }
+    }
+  }
+
+  .save-wrapper {
+    margin-left: 5px;
+    input {
+      transform: scale(1.5);
+    }
+    label {
+      color: $yellow-light;
+      font-size: 30px;
+      font-family: $title-font;
+    }
+    margin-bottom: 20px;
+  }
+  margin-bottom: 30px;
+}
 
 footer {
   background-color: $yellow-light;
