@@ -60,6 +60,6 @@ export class ContextTimer {
   }
 
   get timesSpent(): readonly number[] {
-    return Object.freeze(this._spentOnTasks);
+    return this._spentOnTasks;
   }
 }

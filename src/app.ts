@@ -1,4 +1,4 @@
-import {Quiz} from './components/quiz.js';
+import {Quiz, QuestionResult} from './components/quiz.js';
 import {Intro} from './components/intro.js';
 import {Component} from './components/component.js';
 
@@ -8,7 +8,10 @@ export class App {
   private _quiz: Quiz;
 
   constructor() {
-    this._quiz = new Quiz(this.onQuizSkip.bind(this));
+    this._quiz = new Quiz(
+      this.onQuizSkip.bind(this),
+      this.onQuizFinish.bind(this)
+    );
     this._intro = new Intro(() => {
       this.switchComponent(this._quiz);
       this._quiz.start();
@@ -24,6 +27,19 @@ export class App {
 
   private onQuizSkip(): void {
     this.switchComponent(this._intro);
-    this._quiz = new Quiz(this.onQuizSkip.bind(this));
+    this.initializeNewQuiz();
+  }
+
+  private onQuizFinish(results: QuestionResult[]): void {
+    this.switchComponent(this._intro);
+    console.log(results);
+    this.initializeNewQuiz();
+  }
+
+  private initializeNewQuiz() {
+    this._quiz = new Quiz(
+      this.onQuizSkip.bind(this),
+      this.onQuizFinish.bind(this)
+    );
   }
 }

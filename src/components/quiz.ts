@@ -137,6 +137,14 @@ class QuizNavigation {
   }
 }
 
+export interface QuestionResult {
+  readonly question: Question;
+  readonly usersAnswer: number;
+  readonly timeSpent: number;
+}
+
+type QuizResults = QuestionResult[];
+
 export class Quiz extends Component {
   private readonly _questions: Question[];
   private _idCounter: Counter;
@@ -145,9 +153,14 @@ export class Quiz extends Component {
   private _answerView: AnswerView;
   private _navigation: QuizNavigation;
   private _timer: ContextTimer;
-  private _onSkip: () => void;
+  private readonly _onSkip: () => void;
+  private readonly _onFinish: (res: QuizResults) => void;
 
-  constructor(onSkip: () => void, questions: Question[] = que) {
+  constructor(
+    onSkip: () => void,
+    onFinish: (res: QuizResults) => void,
+    questions: Question[] = que
+  ) {
     super(document.querySelector('.quiz') as HTMLDivElement);
     this._questions = questions;
     this._questionView = new QuestionView(questions[0]);
@@ -170,6 +183,7 @@ export class Quiz extends Component {
     );
 
     this._onSkip = onSkip;
+    this._onFinish = onFinish;
   }
 
   public start(): void {
@@ -185,18 +199,30 @@ export class Quiz extends Component {
     this._idCounter.prev();
   }
 
+  get results(): QuizResults {
+    return [...Array(this._questions.length)].map((_, i: number) => {
+      const answer = this._answers[i].value as number;
+      return {
+        question: this._questions[i],
+        usersAnswer: answer,
+        timeSpent: this._timer.timesSpent[i],
+      };
+    });
+  }
+
+  public skip(): void {
+    this.tearDown();
+    this._onSkip();
+  }
+
   public finish(): void {
-    return;
+    this.tearDown();
+    this._onFinish(this.results);
   }
 
   public tearDown(): void {
     super.tearDown();
     this._timer.stop();
     this._navigation.unregister();
-  }
-
-  public skip(): void {
-    this.tearDown();
-    this._onSkip();
   }
 }
