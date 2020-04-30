@@ -39,7 +39,6 @@ export class ContextTimer {
       (this._msSinceStarted - minutes * 60000 - seconds * 1000) /
       10
     );
-    console.log(this._msSinceStarted, minutes, seconds, hundreds);
     const fmt = (num: number) => num.toString().padStart(2, '0');
     return `${fmt(minutes)}:${fmt(seconds)}:${fmt(hundreds)}`;
   }

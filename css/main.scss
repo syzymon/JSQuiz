@@ -8,7 +8,13 @@ $yellow-white: #fcf7d9;
 $title-font: Impact, Helvetica, sans-serif;
 $text-font: Arial, Helvetica, sans-serif;
 $code-font: Consolas, monospace;
-$clock-font: 'Orbitron', sans-serif;
+
+@font-face {
+  font-family: 'digital';
+  src: url('../inspiration/Segment7-4Gml.otf');
+}
+
+$clock-font: 'digital', monospace;
 
 body {
   background-color: $js-bg;
@@ -198,7 +204,7 @@ main {
       background-color: $dark-yellow;
       color: $js-yellow;
       font-family: $clock-font;
-      font-size: 30px;
+      font-size: 36px;
     }
   }
 
