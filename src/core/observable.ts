@@ -28,6 +28,7 @@ export class Observable<T> {
 }
 
 export class Computed<T> extends Observable<T> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(value: () => T, dependencies: Observable<any>[]) {
     super(value());
     const listener = () => {

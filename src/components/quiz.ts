@@ -1,4 +1,4 @@
-import {Question, questions as que} from '../data/questions.js';
+import {Question, shuffle, questions as que} from '../data/questions.js';
 import {Observable, Computed} from '../core/observable.js';
 import {Slide} from './slide.js';
 import {ContextTimer} from './timer.js';
@@ -86,6 +86,10 @@ class AnswerView {
     this._elem.value =
       switchedAnswer.value !== undefined ? switchedAnswer.value.toString() : '';
   }
+
+  public focus() {
+    this._elem.focus();
+  }
 }
 
 class QuizNavigation {
@@ -94,6 +98,7 @@ class QuizNavigation {
 
   constructor(answers: Observable<maybeNumber>[], parent: Quiz) {
     this._finishBtn = document.querySelector('.finish') as HTMLButtonElement;
+    this._finishBtn.disabled = true;
     this._canFinish = new Computed<boolean>(
       () => answers.every(x => x.value !== undefined),
       answers
@@ -102,7 +107,6 @@ class QuizNavigation {
       this._finishBtn.disabled = !value;
     });
     this.bindActions(parent);
-    this.addKeyboardHandlers(parent);
   }
 
   private bindActions(par: Quiz): void {
@@ -116,24 +120,7 @@ class QuizNavigation {
     });
   }
 
-  private addKeyboardHandlers(par: Quiz): void {
-    document.onkeyup = event => {
-      if (!(event?.target instanceof HTMLInputElement)) {
-        switch (event.code) {
-          case 'ArrowLeft':
-            par.prev();
-            break;
-          case 'ArrowRight':
-            par.next();
-            break;
-        }
-      }
-    };
-  }
-
-  public unregister() {
-    document.onkeyup = null;
-  }
+  public unregister() {}
 }
 
 export interface QuestionResult {
@@ -161,7 +148,7 @@ export class Quiz extends Slide {
     questions: Question[] = que
   ) {
     super(document.querySelector('.quiz') as HTMLDivElement);
-    this._questions = questions;
+    this._questions = shuffle(questions);
     this._questionView = new QuestionView(questions[0]);
     this._answers = [...Array(this._questions.length)].map(
       () => new Observable<maybeNumber>(undefined)
@@ -188,14 +175,17 @@ export class Quiz extends Slide {
   public start(): void {
     console.log('quiz start');
     this._timer.start();
+    this._answerView.focus();
   }
 
   public next(): void {
     this._idCounter.next();
+    this._answerView.focus();
   }
 
   public prev(): void {
     this._idCounter.prev();
+    this._answerView.focus();
   }
 
   get results(): QuizResults {
