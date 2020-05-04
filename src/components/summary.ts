@@ -12,6 +12,7 @@ interface QuizResultsPresentation {
 
 interface QuizResultsEvaluation {
   totalTimeMs: number;
+  userResults: QuizResults;
 }
 
 interface WrongAnswerFeedback {
@@ -62,6 +63,7 @@ class Evaluator {
   get resultsEvaluation(): QuizResultsEvaluation {
     return {
       totalTimeMs: this._totalTimeMs + this._penalty * 1000,
+      userResults: this._results,
     };
   }
 
@@ -84,17 +86,24 @@ function saveToLocalStorage(result: QuizResultsEvaluation): void {
     localStorage.setItem('bestScores', '[]');
   const scoresList = JSON.parse(
     localStorage.getItem('bestScores') as string
-  ) as number[];
-  scoresList.push(result.totalTimeMs);
+  ) as QuizResultsEvaluation[];
+  scoresList.push(result);
   localStorage.setItem(
     'bestScores',
-    JSON.stringify(scoresList.sort((n1, n2) => n1 - n2).slice(0, 5))
+    JSON.stringify(
+      scoresList
+        .sort((ev1, ev2) => ev1.totalTimeMs - ev2.totalTimeMs)
+        .slice(0, 5)
+    )
   );
 }
 
 export function getLocalStorageRanking(): number[] {
   if (!localStorage.getItem('bestScores')) return [];
-  return JSON.parse(localStorage.getItem('bestScores') as string);
+  const results = JSON.parse(
+    localStorage.getItem('bestScores') as string
+  ) as QuizResultsEvaluation[];
+  return results.map(ev => ev.totalTimeMs);
 }
 
 export class Summary extends Slide {
